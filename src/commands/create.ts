@@ -14,36 +14,54 @@ interface CreateInputs {
 export function createCommand(context: vscode.ExtensionContext) {
   const command = vscode.commands.registerCommand('texsch.create', async () => {
     const inputs = await getInputs()
+    if (!inputs) {
+      return
+    }
     await createAndOpen(inputs)
   })
 
   context.subscriptions.push(command)
 }
 
-async function getInputs(): Promise<CreateInputs> {
+async function getInputs(): Promise<CreateInputs | undefined> {
   const inputs: CreateInputs = <CreateInputs>{}
 
   // Getting name
-  const name = await vscode.window.showInputBox({
+  const inputName = await vscode.window.showInputBox({
     placeHolder: 'Document Name (e.g. Chapter #20)',
   })
-  if (name === undefined) {
-    throw new Error('Cancelled')
+  if (!inputName) {
+    return
   }
-  inputs.name = name
+  inputs.name = inputName
 
-  inputs.class = await execLinesAsOptions('texsch create --classes')
-  inputs.type = await execLinesAsOptions('texsch create --doctypes')
-  inputs.template = await execLinesAsOptions('texsch create --templates')
+  // Getting class
+  const inputClass = await execLinesAsOptions('texsch create --classes')
+  if (!inputClass) {
+    return
+  }
+  inputs.class = inputClass
+
+  // Getting document type
+  const inputType = await execLinesAsOptions('texsch create --doctypes')
+  if (!inputType) {
+    return
+  }
+  inputs.type = inputType
+
+  // Getting template
+  const inputTemplate = await execLinesAsOptions('texsch create --templates')
+  if (!inputTemplate) {
+    return
+  }
+  inputs.template = inputTemplate
+
   return inputs
 }
 
-async function execLinesAsOptions(cmd: string): Promise<string> {
+async function execLinesAsOptions(cmd: string): Promise<string | undefined> {
   const { stdout } = await exec(cmd)
   const result = await vscode.window.showQuickPick(stdout.trim().split('\n'))
-  if (result === undefined) {
-    throw new Error('Cancelled')
-  }
   return result
 }
 
