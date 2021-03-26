@@ -71,6 +71,8 @@ async function createAndOpen(inputs: CreateInputs) {
   )
   // Getting filename from stdout
   const lines = stdout.trim().split('\n')
-  const filepath = lines[lines.length - 1].replace('✔ Created file at ', '')
-  await vscode.workspace.openTextDocument(vscode.Uri.file(filepath))
+  await vscode.commands.executeCommand(
+    'vscode.open',
+    vscode.Uri.file(lines[lines.length - 1].replace('✔ Created file at ', ''))
+  )
 }
