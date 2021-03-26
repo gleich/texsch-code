@@ -21,6 +21,10 @@
       }
     ]
   },
+  "maintainers": [
+    "Matthew Gleich <email@mattglei.ch>"
+  ],
+  "publisher": "MattGleich",
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
