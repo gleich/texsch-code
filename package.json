@@ -17,7 +17,7 @@
     "commands": [
       {
         "command": "texsch.create",
-        "title": "Create Document"
+        "title": "texsch: Create Document"
       }
     ]
   },
