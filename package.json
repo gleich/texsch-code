@@ -35,7 +35,7 @@
     "Matthew Gleich <email@mattglei.ch>"
   ],
   "publisher": "MattGleich",
-  "repository": "https://github.com/Matt-Gleich/texsch-code",
+  "repository": "https://github.com/gleich/texsch-code",
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
